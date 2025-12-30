@@ -32,15 +32,11 @@ func (g *viewGui) makeUI() fyne.CanvasObject {
 * stuff`)
 	g.open = widget.NewButton("Open  on Slashdot", func() {})
 	g.share = widget.NewButtonWithIcon("", theme.UploadIcon(), func() {})
-	g.time = &canvas.Text{Alignment: 0, Color: &color.NRGBA{R: 0xff, G: 0x98, B: 0x0, A: 0xff}, Text: "Post time", TextSize: 11, TextStyle: fyne.TextStyle{Bold: false, Italic: false, Monospace: false, Symbol: false, TabWidth: 0, Underline: false}, FontSource: nil}
+	g.time = &canvas.Text{Alignment: 0, Color: color.NRGBA{R: 0xff, G: 0x98, B: 0x0, A: 0xff}, Text: "Now", TextSize: 11, TextStyle: fyne.TextStyle{Bold: false, Italic: false, Monospace: false, Symbol: false, TabWidth: 0, Underline: false}, FontSource: nil}
 	g.title = widget.NewRichTextFromMarkdown(`# Article`)
 
 	return container.NewBorder(
-
-		container.NewVBox(
-			g.title,
-			container.NewPadded(
-				g.time)),
+		nil,
 
 		container.NewBorder(
 			nil,
@@ -51,13 +47,23 @@ func (g *viewGui) makeUI() fyne.CanvasObject {
 			g.open),
 		nil,
 		nil,
-		g.content)
+		container.NewScroll(
+			container.NewBorder(
+
+				container.NewVBox(
+					g.title,
+					container.NewPadded(
+						g.time)),
+				nil,
+				nil,
+				nil,
+				g.content)))
 }
 
 func (g *viewGui) makeWindow(a fyne.App) fyne.Window {
 	w := a.NewWindow("view")
 	g.win = w
-	w.Resize(fyne.NewSize(337, 226))
+	w.Resize(fyne.NewSize(341, 226))
 	w.SetContent(g.makeUI())
 	return w
 }

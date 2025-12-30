@@ -3,12 +3,14 @@ package main
 import (
 	"image/color"
 	"net/url"
+	"runtime"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -59,12 +61,22 @@ func (g *gui) loadFeed(done func(), w fyne.Window) {
 	g.feed.Length = func() int {
 		return len(rss.Items)
 	}
+	g.feed.CreateItem = func() fyne.CanvasObject {
+		l := widget.NewLabel("This is an item that will have content")
+		l.Wrapping = fyne.TextWrapWord
+
+		return container.NewBorder(nil, nil, nil,
+			widget.NewIcon(theme.MenuExpandIcon()),
+			l)
+	}
 	g.feed.UpdateItem = func(id widget.ListItemID, o fyne.CanvasObject) {
 		item := rss.Items[id]
 
-		l := o.(*widget.Label)
-		l.Truncation = fyne.TextTruncateEllipsis
+		l := o.(*fyne.Container).Objects[0].(*widget.Label)
 		l.SetText(item.Title)
+
+		minHeight := l.MinSize().Height
+		g.feed.SetItemHeight(id, minHeight)
 	}
 	g.feed.OnSelected = func(id widget.ListItemID) {
 		item := rss.Items[id]
@@ -84,9 +96,8 @@ func (g *gui) showItem(i Item, nav *container.Navigation, w fyne.Window) {
 
 	v.title.Wrapping = fyne.TextWrapWord
 	v.title.ParseMarkdown("# " + i.Title)
-	v.time.Text = i.Date
+	v.time.Text = durationSince(i.Date)
 
-	v.content.Scroll = fyne.ScrollVerticalOnly
 	v.content.Wrapping = fyne.TextWrapWord
 	v.content.ParseMarkdown(i.Description)
 
@@ -95,6 +106,13 @@ func (g *gui) showItem(i Item, nav *container.Navigation, w fyne.Window) {
 		_ = fyne.CurrentApp().OpenURL(u)
 	}
 
+	if runtime.GOOS == "android" {
+		res := fyne.NewStaticResource("share-android.svg", shareAndroidBytes)
+		v.share.SetIcon(theme.NewThemedResource(res))
+	} else {
+		res := fyne.NewStaticResource("share.svg", shareBytes)
+		v.share.SetIcon(theme.NewThemedResource(res))
+	}
 	v.share.OnTapped = func() {
 		fyne.CurrentApp().Clipboard().SetContent(i.Link)
 		dialog.ShowInformation("Copied...", "Link copied to clipboard", w)

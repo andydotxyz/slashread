@@ -40,7 +40,7 @@ func (g *gui) makeUI() fyne.CanvasObject {
 func (g *gui) makeWindow(a fyne.App) fyne.Window {
 	w := a.NewWindow("main")
 	g.win = w
-	w.Resize(fyne.NewSize(476, 415))
+	w.Resize(fyne.NewSize(340, 372))
 	w.SetContent(g.makeUI())
 	return w
 }

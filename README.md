@@ -2,4 +2,8 @@
 
 A cross-platform Slashdot reader built with the Fyne toolkit.
 
-![](Icon.png)
+# Screenshots 
+
+![](img/screenshot-list.png)
+
+![](img/screenshot-content.png)
