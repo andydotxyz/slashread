@@ -1,0 +1,207 @@
+{
+  "Apptrix": {
+    "Version": "1"
+  },
+  "Metadata": {
+    "height": 226,
+    "width": 337
+  },
+  "Screens": [
+    {
+      "Object": {
+        "Type": "*fyne.Container",
+        "Layout": "Border",
+        "Objects": [
+          {
+            "Type": "*fyne.Container",
+            "Layout": "VBox",
+            "Objects": [
+              {
+                "Type": "*widget.RichText",
+                "Name": "title",
+                "Struct": {
+                  "Hidden": false,
+                  "Segments": [
+                    {
+                      "Style": {
+                        "Alignment": 0,
+                        "ColorName": "",
+                        "Inline": false,
+                        "SizeName": "",
+                        "TextStyle": {
+                          "Bold": true,
+                          "Italic": false,
+                          "Monospace": false,
+                          "Symbol": false,
+                          "TabWidth": 0,
+                          "Underline": false
+                        }
+                      },
+                      "Text": "Article"
+                    }
+                  ],
+                  "Wrapping": 3,
+                  "Scroll": 3,
+                  "Truncation": 0
+                },
+                "Properties": {
+                  "text": "# Article"
+                }
+              },
+              {
+                "Type": "*fyne.Container",
+                "Layout": "Padded",
+                "Objects": [
+                  {
+                    "Type": "*canvas.Text",
+                    "Name": "time",
+                    "Struct": {
+                      "Hidden": false,
+                      "Alignment": 0,
+                      "Color": {
+                        "R": 255,
+                        "G": 152,
+                        "B": 0,
+                        "A": 255
+                      },
+                      "Text": "Post time",
+                      "TextSize": 11,
+                      "TextStyle": {
+                        "Bold": false,
+                        "Italic": false,
+                        "Monospace": false,
+                        "Symbol": false,
+                        "TabWidth": 0,
+                        "Underline": false
+                      },
+                      "FontSource": null
+                    }
+                  }
+                ],
+                "Properties": {
+                  "layout": "Padded"
+                }
+              }
+            ],
+            "Properties": {
+              "dir": "vertical",
+              "layout": "VBox"
+            }
+          },
+          {
+            "Type": "*widget.RichText",
+            "Name": "content",
+            "Struct": {
+              "Hidden": false,
+              "Segments": [
+                {
+                  "Style": {
+                    "Alignment": 0,
+                    "ColorName": "",
+                    "Inline": false,
+                    "SizeName": "",
+                    "TextStyle": {
+                      "Bold": false,
+                      "Italic": false,
+                      "Monospace": false,
+                      "Symbol": false,
+                      "TabWidth": 0,
+                      "Underline": false
+                    }
+                  },
+                  "Text": "Article content"
+                },
+                {
+                  "Style": {
+                    "Alignment": 0,
+                    "ColorName": "",
+                    "Inline": false,
+                    "SizeName": "",
+                    "TextStyle": {
+                      "Bold": false,
+                      "Italic": false,
+                      "Monospace": false,
+                      "Symbol": false,
+                      "TabWidth": 0,
+                      "Underline": false
+                    }
+                  },
+                  "Text": ""
+                },
+                {
+                  "Style": {
+                    "Alignment": 0,
+                    "ColorName": "",
+                    "Inline": false,
+                    "SizeName": "",
+                    "TextStyle": {
+                      "Bold": false,
+                      "Italic": false,
+                      "Monospace": false,
+                      "Symbol": false,
+                      "TabWidth": 0,
+                      "Underline": false
+                    }
+                  },
+                  "Text": ""
+                }
+              ],
+              "Wrapping": 3,
+              "Scroll": 3,
+              "Truncation": 0
+            },
+            "Properties": {
+              "text": "Article content\n\n* stuff"
+            }
+          },
+          {
+            "Type": "*fyne.Container",
+            "Layout": "Border",
+            "Objects": [
+              {
+                "Type": "*widget.Button",
+                "Name": "open",
+                "Struct": {
+                  "Hidden": false,
+                  "Text": "Open  on Slashdot",
+                  "Icon": null,
+                  "Importance": 0,
+                  "Alignment": 0,
+                  "IconPlacement": 0
+                }
+              },
+              {
+                "Type": "*widget.Button",
+                "Name": "share",
+                "Struct": {
+                  "Hidden": false,
+                  "Text": "",
+                  "Icon": "UploadIcon",
+                  "Importance": 0,
+                  "Alignment": 0,
+                  "IconPlacement": 0
+                }
+              }
+            ],
+            "Properties": {
+              "bottom": "",
+              "layout": "Border",
+              "left": "",
+              "right": "1",
+              "top": ""
+            }
+          }
+        ],
+        "Properties": {
+          "bottom": "2",
+          "dir": "vertical",
+          "layout": "Border",
+          "left": "",
+          "right": "",
+          "top": "0"
+        }
+      },
+      "Name": ""
+    }
+  ]
+}

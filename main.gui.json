@@ -1,0 +1,48 @@
+{
+  "Apptrix": {
+    "Version": "1"
+  },
+  "Metadata": {
+    "height": 415,
+    "width": 476
+  },
+  "Screens": [
+    {
+      "Object": {
+        "Type": "*fyne.Container",
+        "Layout": "Stack",
+        "Objects": [
+          {
+            "Type": "*container.Navigation",
+            "Name": "nav",
+            "Struct": {
+              "Root": {
+                "Type": "*fyne.Container",
+                "Layout": "Stack",
+                "Objects": [
+                  {
+                    "Type": "*widget.List",
+                    "Name": "feed",
+                    "Struct": {
+                      "Hidden": false,
+                      "HideSeparators": false
+                    }
+                  }
+                ],
+                "Properties": {
+                  "layout": "Stack"
+                }
+              },
+              "Title": "/."
+            }
+          }
+        ],
+        "Properties": {
+          "dir": "vertical",
+          "layout": "Stack"
+        }
+      },
+      "Name": ""
+    }
+  ]
+}
