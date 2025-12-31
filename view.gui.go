@@ -4,12 +4,13 @@
 package main
 
 import (
+	"image/color"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
-	"image/color"
 )
 
 type viewGui struct {
@@ -17,6 +18,7 @@ type viewGui struct {
 
 	content *widget.RichText
 	open    *widget.Button
+	section *canvas.Image
 	share   *widget.Button
 	time    *canvas.Text
 	title   *widget.RichText
@@ -31,8 +33,13 @@ func (g *viewGui) makeUI() fyne.CanvasObject {
 
 * stuff`)
 	g.open = widget.NewButton("Open  on Slashdot", func() {})
+	g.section = func() *canvas.Image {
+		img := &canvas.Image{File: "/Users/andy/Code/Andy/slashread/Icon.png", FillMode: canvas.ImageFillContain, CornerRadius: 0.000000}
+		img.SetMinSize(fyne.Size{Width: 32, Height: 32})
+		return img
+	}()
 	g.share = widget.NewButtonWithIcon("", theme.UploadIcon(), func() {})
-	g.time = &canvas.Text{Alignment: 0, Color: color.NRGBA{R: 0xff, G: 0x98, B: 0x0, A: 0xff}, Text: "Now", TextSize: 11, TextStyle: fyne.TextStyle{Bold: false, Italic: false, Monospace: false, Symbol: false, TabWidth: 0, Underline: false}, FontSource: nil}
+	g.time = &canvas.Text{Alignment: 0, Color: color.NRGBA{R: 0xff, G: 0x98, B: 0x0, A: 0xff}, Text: "Text", TextSize: 11, TextStyle: fyne.TextStyle{Bold: false, Italic: false, Monospace: false, Symbol: false, TabWidth: 0, Underline: false}, FontSource: nil}
 	g.title = widget.NewRichTextFromMarkdown(`# Article`)
 
 	return container.NewBorder(
@@ -50,10 +57,18 @@ func (g *viewGui) makeUI() fyne.CanvasObject {
 		container.NewScroll(
 			container.NewBorder(
 
-				container.NewVBox(
-					g.title,
-					container.NewPadded(
-						g.time)),
+				container.NewBorder(
+					nil,
+					nil,
+					nil,
+
+					container.NewVBox(
+						container.NewPadded(
+							g.section)),
+					container.NewVBox(
+						g.title,
+						container.NewPadded(
+							g.time))),
 				nil,
 				nil,
 				nil,

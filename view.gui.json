@@ -65,9 +65,9 @@
                         {
                           "Style": {
                             "Alignment": 0,
-                            "ColorName": "foreground",
-                            "Inline": true,
-                            "SizeName": "text",
+                            "ColorName": "",
+                            "Inline": false,
+                            "SizeName": "",
                             "TextStyle": {
                               "Bold": false,
                               "Italic": false,
@@ -82,9 +82,9 @@
                         {
                           "Style": {
                             "Alignment": 0,
-                            "ColorName": "foreground",
+                            "ColorName": "",
                             "Inline": false,
-                            "SizeName": "text",
+                            "SizeName": "",
                             "TextStyle": {
                               "Bold": false,
                               "Italic": false,
@@ -97,30 +97,21 @@
                           "Text": ""
                         },
                         {
-                          "Items": [
-                            {
-                              "Texts": [
-                                {
-                                  "Style": {
-                                    "Alignment": 0,
-                                    "ColorName": "foreground",
-                                    "Inline": true,
-                                    "SizeName": "text",
-                                    "TextStyle": {
-                                      "Bold": false,
-                                      "Italic": false,
-                                      "Monospace": false,
-                                      "Symbol": false,
-                                      "TabWidth": 0,
-                                      "Underline": false
-                                    }
-                                  },
-                                  "Text": "stuff"
-                                }
-                              ]
+                          "Style": {
+                            "Alignment": 0,
+                            "ColorName": "",
+                            "Inline": false,
+                            "SizeName": "",
+                            "TextStyle": {
+                              "Bold": false,
+                              "Italic": false,
+                              "Monospace": false,
+                              "Symbol": false,
+                              "TabWidth": 0,
+                              "Underline": false
                             }
-                          ],
-                          "Ordered": false
+                          },
+                          "Text": ""
                         }
                       ],
                       "Wrapping": 0,
@@ -133,78 +124,129 @@
                   },
                   {
                     "Type": "*fyne.Container",
-                    "Layout": "VBox",
+                    "Layout": "Border",
                     "Objects": [
                       {
-                        "Type": "*widget.RichText",
-                        "Name": "title",
-                        "Struct": {
-                          "Hidden": false,
-                          "Segments": [
-                            {
-                              "Style": {
-                                "Alignment": 0,
-                                "ColorName": "foreground",
-                                "Inline": false,
-                                "SizeName": "headingText",
-                                "TextStyle": {
-                                  "Bold": true,
-                                  "Italic": false,
-                                  "Monospace": false,
-                                  "Symbol": false,
-                                  "TabWidth": 0,
-                                  "Underline": false
-                                }
-                              },
-                              "Text": "Article"
-                            }
-                          ],
-                          "Wrapping": 0,
-                          "Scroll": 3,
-                          "Truncation": 0
-                        },
-                        "Properties": {
-                          "text": "# Article"
-                        }
-                      },
-                      {
                         "Type": "*fyne.Container",
-                        "Layout": "Padded",
+                        "Layout": "VBox",
                         "Objects": [
                           {
-                            "Type": "*canvas.Text",
-                            "Name": "time",
+                            "Type": "*widget.RichText",
+                            "Name": "title",
                             "Struct": {
                               "Hidden": false,
-                              "Alignment": 0,
-                              "Color": {
-                                "R": 255,
-                                "G": 152,
-                                "B": 0,
-                                "A": 255
-                              },
-                              "Text": "Now",
-                              "TextSize": 11,
-                              "TextStyle": {
-                                "Bold": false,
-                                "Italic": false,
-                                "Monospace": false,
-                                "Symbol": false,
-                                "TabWidth": 0,
-                                "Underline": false
-                              },
-                              "FontSource": null
+                              "Segments": [
+                                {
+                                  "Style": {
+                                    "Alignment": 0,
+                                    "ColorName": "",
+                                    "Inline": false,
+                                    "SizeName": "",
+                                    "TextStyle": {
+                                      "Bold": true,
+                                      "Italic": false,
+                                      "Monospace": false,
+                                      "Symbol": false,
+                                      "TabWidth": 0,
+                                      "Underline": false
+                                    }
+                                  },
+                                  "Text": "Article"
+                                }
+                              ],
+                              "Wrapping": 0,
+                              "Scroll": 3,
+                              "Truncation": 0
+                            },
+                            "Properties": {
+                              "text": "# Article"
+                            }
+                          },
+                          {
+                            "Type": "*fyne.Container",
+                            "Layout": "Padded",
+                            "Objects": [
+                              {
+                                "Type": "*canvas.Text",
+                                "Name": "time",
+                                "Struct": {
+                                  "Hidden": false,
+                                  "Alignment": 0,
+                                  "Color": {
+                                    "R": 255,
+                                    "G": 152,
+                                    "B": 0,
+                                    "A": 255
+                                  },
+                                  "Text": "Text",
+                                  "TextSize": 11,
+                                  "TextStyle": {
+                                    "Bold": false,
+                                    "Italic": false,
+                                    "Monospace": false,
+                                    "Symbol": false,
+                                    "TabWidth": 0,
+                                    "Underline": false
+                                  },
+                                  "FontSource": null
+                                }
+                              }
+                            ],
+                            "Properties": {
+                              "layout": "Padded"
                             }
                           }
                         ],
                         "Properties": {
-                          "layout": "Padded"
+                          "dir": "vertical",
+                          "layout": "VBox"
+                        }
+                      },
+                      {
+                        "Type": "*fyne.Container",
+                        "Layout": "VBox",
+                        "Objects": [
+                          {
+                            "Type": "*fyne.Container",
+                            "Layout": "Padded",
+                            "Objects": [
+                              {
+                                "Type": "*canvas.Image",
+                                "Name": "section",
+                                "Struct": {
+                                  "Hidden": false,
+                                  "File": "/Users/andy/Code/Andy/slashread/Icon.png",
+                                  "Resource": null,
+                                  "Image": null,
+                                  "Translucency": 0,
+                                  "FillMode": 1,
+                                  "ScaleMode": 0,
+                                  "CornerRadius": 0
+                                },
+                                "Properties": {
+                                  "minHeight": "32",
+                                  "minWidth": "32"
+                                }
+                              }
+                            ],
+                            "Properties": {
+                              "layout": "Padded"
+                            }
+                          }
+                        ],
+                        "Properties": {
+                          "dir": "vertical",
+                          "layout": "VBox"
                         }
                       }
                     ],
                     "Properties": {
+                      "bottom": "",
                       "dir": "vertical",
-                      "layout": "VBox"
+                      "layout": "Border",
+                      "left": "",
+                      "right": "1",
+                      "top": ""
                     }
                   }
                 ],

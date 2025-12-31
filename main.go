@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 	"net/url"
 	"runtime"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -65,7 +67,10 @@ func (g *gui) loadFeed(done func(), w fyne.Window) {
 		l := widget.NewLabel("This is an item that will have content")
 		l.Wrapping = fyne.TextWrapWord
 
-		return container.NewBorder(nil, nil, nil,
+		icon := &canvas.Image{}
+		icon.FillMode = canvas.ImageFillContain
+		icon.SetMinSize(fyne.NewSquareSize(32))
+		return container.NewBorder(nil, nil, icon,
 			widget.NewIcon(theme.MenuExpandIcon()),
 			l)
 	}
@@ -75,6 +80,11 @@ func (g *gui) loadFeed(done func(), w fyne.Window) {
 		l := o.(*fyne.Container).Objects[0].(*widget.Label)
 		l.SetText(item.Title)
 
+		i := o.(*fyne.Container).Objects[1].(*canvas.Image)
+		i.Image = nil
+		i.Resource = item.ImageResource()
+		i.Refresh()
+
 		minHeight := l.MinSize().Height
 		g.feed.SetItemHeight(id, minHeight)
 	}
@@ -82,6 +92,12 @@ func (g *gui) loadFeed(done func(), w fyne.Window) {
 		item := rss.Items[id]
 
 		g.showItem(item, g.nav, w)
+		go func() {
+			time.Sleep(canvas.DurationStandard)
+			fyne.Do(func() {
+				g.feed.Unselect(id)
+			})
+		}()
 	}
 
 	fyne.Do(func() {
@@ -96,10 +112,14 @@ func (g *gui) showItem(i Item, nav *container.Navigation, w fyne.Window) {
 
 	v.title.Wrapping = fyne.TextWrapWord
 	v.title.ParseMarkdown("# " + i.Title)
-	v.time.Text = durationSince(i.Date)
+	v.time.Text = fmt.Sprintf("Posted by %s %s.", i.Creator, durationSince(i.Date))
 
 	v.content.Wrapping = fyne.TextWrapWord
 	v.content.ParseMarkdown(i.Description)
+
+	res, _ := fyne.LoadResourceFromURLString(i.ImageURL())
+	v.section.Resource = res
+	v.section.Refresh()
 
 	v.open.OnTapped = func() {
 		u, _ := url.Parse(i.Link)

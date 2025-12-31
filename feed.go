@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/xml"
+	"fmt"
 	"net/http"
 
+	"fyne.io/fyne/v2"
 	"golang.org/x/net/html/charset"
 )
 
@@ -19,9 +21,37 @@ type Channel struct {
 
 type Item struct {
 	Title       string `xml:"title"`
+	Section     string `xml:"section"`
+	Subject     string `xml:"subject"`
 	Date        string `xml:"date"`
+	Creator     string `xml:"creator"`
+	Department  string `xml:"department"`
 	Link        string `xml:"link"`
 	Description string `xml:"description"`
+}
+
+func (i Item) ImageURL() string {
+	src := i.Subject
+
+	return fmt.Sprintf("https://a.fsdn.com/sd/topics/%s_64.png", src)
+}
+
+var resources = make(map[string]fyne.Resource)
+
+func (i Item) ImageResource() fyne.Resource {
+	res, ok := resources[i.Subject]
+	if ok {
+		return res
+	}
+
+	res, err := fyne.LoadResourceFromURLString(i.ImageURL())
+	if err != nil {
+		fyne.LogError("Failed to read section image", err)
+		return nil
+	}
+
+	resources[i.Subject] = res
+	return res
 }
 
 func readFeed(url string) (*RSS, error) {
