@@ -81,9 +81,15 @@ func (g *gui) loadFeed(done func(), w fyne.Window) {
 		l.SetText(item.Title)
 
 		i := o.(*fyne.Container).Objects[1].(*canvas.Image)
-		i.Image = nil
-		i.Resource = item.ImageResource()
-		i.Refresh()
+		go func() {
+			res := item.ImageResource() // potentially slow on first load
+
+			fyne.Do(func() {
+				i.Image = nil
+				i.Resource = res
+				i.Refresh()
+			})
+		}()
 
 		minHeight := l.MinSize().Height
 		g.feed.SetItemHeight(id, minHeight)
@@ -91,8 +97,8 @@ func (g *gui) loadFeed(done func(), w fyne.Window) {
 	g.feed.OnSelected = func(id widget.ListItemID) {
 		item := rss.Items[id]
 
-		g.showItem(item, g.nav, w)
 		go func() {
+			g.showItem(item, g.nav, w)
 			time.Sleep(canvas.DurationStandard)
 			fyne.Do(func() {
 				g.feed.Unselect(id)
@@ -125,18 +131,20 @@ func (g *gui) showItem(i Item, nav *container.Navigation, w fyne.Window) {
 		u, _ := url.Parse(i.Link)
 		_ = fyne.CurrentApp().OpenURL(u)
 	}
-
-	if runtime.GOOS == "android" {
-		res := fyne.NewStaticResource("share-android.svg", shareAndroidBytes)
-		v.share.SetIcon(theme.NewThemedResource(res))
-	} else {
-		res := fyne.NewStaticResource("share.svg", shareBytes)
-		v.share.SetIcon(theme.NewThemedResource(res))
-	}
 	v.share.OnTapped = func() {
 		fyne.CurrentApp().Clipboard().SetContent(i.Link)
 		dialog.ShowInformation("Copied...", "Link copied to clipboard", w)
 	}
 
-	nav.PushWithTitle(ui, i.Title)
+	fyne.Do(func() {
+		if runtime.GOOS == "android" {
+			res := fyne.NewStaticResource("share-android.svg", shareAndroidBytes)
+			v.share.SetIcon(theme.NewThemedResource(res))
+		} else {
+			res := fyne.NewStaticResource("share.svg", shareBytes)
+			v.share.SetIcon(theme.NewThemedResource(res))
+		}
+
+		nav.PushWithTitle(ui, i.Title)
+	})
 }
