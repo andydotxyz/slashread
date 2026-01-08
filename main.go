@@ -81,15 +81,7 @@ func (g *gui) loadFeed(done func(), w fyne.Window) {
 		l.SetText(item.Title)
 
 		i := o.(*fyne.Container).Objects[1].(*canvas.Image)
-		go func() {
-			res := item.ImageResource() // potentially slow on first load
-
-			fyne.Do(func() {
-				i.Image = nil
-				i.Resource = res
-				i.Refresh()
-			})
-		}()
+		loadIcon(item, i)
 
 		minHeight := l.MinSize().Height
 		g.feed.SetItemHeight(id, minHeight)
@@ -123,9 +115,7 @@ func (g *gui) showItem(i Item, nav *container.Navigation, w fyne.Window) {
 	v.content.Wrapping = fyne.TextWrapWord
 	v.content.ParseMarkdown(i.Description)
 
-	res, _ := fyne.LoadResourceFromURLString(i.ImageURL())
-	v.section.Resource = res
-	v.section.Refresh()
+	loadIcon(i, v.section)
 
 	v.open.OnTapped = func() {
 		u, _ := url.Parse(i.Link)
@@ -147,4 +137,16 @@ func (g *gui) showItem(i Item, nav *container.Navigation, w fyne.Window) {
 
 		nav.PushWithTitle(ui, i.Title)
 	})
+}
+
+func loadIcon(i Item, img *canvas.Image) {
+	go func() {
+		res := i.ImageResource() // potentially slow on first load
+
+		fyne.Do(func() {
+			img.Image = nil
+			img.Resource = res
+			img.Refresh()
+		})
+	}()
 }

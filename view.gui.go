@@ -34,7 +34,7 @@ func (g *viewGui) makeUI() fyne.CanvasObject {
 * stuff`)
 	g.open = widget.NewButton("Open  on Slashdot", func() {})
 	g.section = func() *canvas.Image {
-		img := &canvas.Image{File: "/Users/andy/Code/Andy/slashread/Icon.png", FillMode: canvas.ImageFillContain, CornerRadius: 0.000000}
+		img := &canvas.Image{FillMode: canvas.ImageFillContain, CornerRadius: 0.000000}
 		img.SetMinSize(fyne.Size{Width: 32, Height: 32})
 		return img
 	}()
