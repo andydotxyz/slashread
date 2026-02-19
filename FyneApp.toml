@@ -3,4 +3,8 @@ Icon = "Icon.png"
 Name = "SlashRead"
 ID = "xyz.andy.slashread"
 Version = "1.0.0"
-Build = 15
+Build = 41
+
+[AdaptiveIcon]
+Foreground = "img/Icon-foreground.png"
+Monochrome = "img/Icon-monochrome.png"
