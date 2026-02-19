@@ -140,8 +140,11 @@ func (g *gui) showItem(i Item, nav *container.Navigation, w fyne.Window) {
 }
 
 func loadIcon(i Item, img *canvas.Image) {
-	go func() {
-		res := i.ImageResource() // potentially slow on first load
+	go func() { // potentially slow on first load
+		res, err := fyne.CacheResourceFromURLString(i.ImageURL())
+		if err != nil {
+			fyne.LogError("Failed to read section image", err)
+		}
 
 		fyne.Do(func() {
 			img.Image = nil
