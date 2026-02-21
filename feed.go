@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
-	"net/http"
+	"io"
 
 	"golang.org/x/net/html/charset"
 )
@@ -35,15 +35,10 @@ func (i Item) ImageURL() string {
 	return fmt.Sprintf("https://a.fsdn.com/sd/topics/%s_64.png", src)
 }
 
-func readFeed(url string) (*RSS, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
+func readFeed(r io.Reader) (*RSS, error) {
 	rss := &RSS{}
-	decoder := xml.NewDecoder(resp.Body)
+	decoder := xml.NewDecoder(r)
 	decoder.CharsetReader = charset.NewReaderLabel
+
 	return rss, decoder.Decode(rss)
 }

@@ -1,10 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"image/color"
+	"io"
+	"log"
+	"net/http"
 	"net/url"
 	"runtime"
+	"strconv"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -12,8 +17,14 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/driver/mobile"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
+)
+
+const (
+	cacheKey     = "slashdotMain.rss"
+	cacheTimeKey = "slashdotMain.time"
 )
 
 var (
@@ -80,13 +91,63 @@ func (g *gui) setupActions(w fyne.Window) {
 }
 
 func (g *gui) loadFeed(done func(), w fyne.Window) {
-	rss, err := readFeed("https://rss.slashdot.org/Slashdot/slashdotMain")
+	cacheTimeStr := ""
+
+	// if we have a cache...
+	if fyne.CurrentApp().Cache().Exists(cacheKey) {
+		read, err := fyne.CurrentApp().Cache().Read(cacheKey)
+		if err != nil {
+			log.Println("Failed to read cached feed") // not important
+		} else {
+			_ = g.loadFeedFromReader(read, done, w) // ignore
+			_ = read.Close()
+
+			cacheTimeStr = fyne.CurrentApp().Preferences().String(cacheTimeKey)
+		}
+	}
+
+	// then read from the web
+	resp, err := http.Get("https://rss.slashdot.org/Slashdot/slashdotMain")
 	if err != nil {
 		fyne.Do(func() {
 			done()
-			dialog.ShowError(err, w)
+			age := cacheRecency(cacheTimeStr)
+			dialog.ShowInformation("Error", "Failed to connect to slashdot, "+age, w)
 		})
 		return
+	}
+
+	copier := &bytes.Buffer{}
+	read := io.TeeReader(resp.Body, copier)
+	err = g.loadFeedFromReader(read, done, w)
+	if err != nil {
+		fyne.Do(func() {
+			done()
+			age := cacheRecency(cacheTimeStr)
+			dialog.ShowInformation("Error", "Failed to load feed, "+age, w)
+		})
+		return
+	}
+	_ = resp.Body.Close()
+
+	write, err := fyne.CurrentApp().Cache().Write(cacheKey)
+
+	_, err = io.Copy(write, copier)
+	_ = write.Close()
+	if err != nil {
+		log.Println("Failed to save cached feed, removing") // not important
+		fyne.CurrentApp().Cache().Remove(cacheKey)
+	}
+
+	now := time.Now().Format(time.DateTime)
+	fyne.CurrentApp().Preferences().SetString(cacheTimeKey, now)
+	done()
+}
+
+func (g *gui) loadFeedFromReader(r io.Reader, done func(), w fyne.Window) error {
+	rss, err := readFeed(r)
+	if err != nil {
+		return err
 	}
 
 	g.feed.Length = func() int {
@@ -131,6 +192,7 @@ func (g *gui) loadFeed(done func(), w fyne.Window) {
 		g.feed.Refresh()
 		done()
 	})
+	return nil
 }
 
 func (g *gui) showItem(i Item, nav *container.Navigation, w fyne.Window) {
@@ -183,4 +245,20 @@ func loadIcon(i Item, img *canvas.Image) {
 			img.Refresh()
 		})
 	}()
+}
+
+func cacheRecency(prevTime string) string {
+	cacheTime, _ := time.Parse(time.DateTime, prevTime)
+	diff := time.Now().Sub(cacheTime)
+
+	prefix := "using feed downloaded "
+	if diff < time.Hour {
+		return prefix + "recently"
+	} else if diff < time.Hour*24 {
+		return prefix + strconv.Itoa(int(diff.Hours())) + " hours ago"
+	} else if diff < time.Hour*24*7 {
+		return prefix + strconv.Itoa(int(diff.Hours()/24)) + " days ago"
+	} else {
+		return prefix + strconv.Itoa(int(diff.Hours()/24/7)) + " weeks ago"
+	}
 }

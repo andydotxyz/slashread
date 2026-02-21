@@ -1,5 +1,7 @@
-fyne.io/fyne/v2 v2.7.3-0.20260218184340-9fedb47d3b4b h1:Tj+o7v1VEqoyHQYxxaDBo95TrGWHm5xHxJ7UnNsyUfA=
-fyne.io/fyne/v2 v2.7.3-0.20260218184340-9fedb47d3b4b/go.mod h1:li9jHss2gw1/bXQVx7jlZu4gCNBuT7zIAIvvYAzeRxE=
+fyne.io/fyne/v2 v2.7.3-0.20260215191441-b898e832d431 h1:ndbEbkpjS+LJFDyJphB1CtSUwBTOo0C1xwnxIBKgxmA=
+fyne.io/fyne/v2 v2.7.3-0.20260215191441-b898e832d431/go.mod h1:li9jHss2gw1/bXQVx7jlZu4gCNBuT7zIAIvvYAzeRxE=
+fyne.io/fyne/v2 v2.7.4-0.20260221134351-8dded11c54a0 h1:I3yV4HMG2rEY1lk3TusB8ggKO/0wj0V4Pml954WQ6vw=
+fyne.io/fyne/v2 v2.7.4-0.20260221134351-8dded11c54a0/go.mod h1:li9jHss2gw1/bXQVx7jlZu4gCNBuT7zIAIvvYAzeRxE=
 fyne.io/systray v1.12.0 h1:CA1Kk0e2zwFlxtc02L3QFSiIbxJ/P0n582YrZHT7aTM=
 fyne.io/systray v1.12.0/go.mod h1:RVwqP9nYMo7h5zViCBHri2FgjXF7H2cub7MAq4NSoLs=
 github.com/BurntSushi/toml v1.5.0 h1:W5quZX/G/csjUnuI8SUYlsHs9M38FC7znL0lIO+DvMg=

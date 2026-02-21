@@ -3,7 +3,7 @@ module slashread
 go 1.19
 
 require (
-	fyne.io/fyne/v2 v2.7.3-0.20260218184340-9fedb47d3b4b
+	fyne.io/fyne/v2 v2.7.4-0.20260221134351-8dded11c54a0
 	golang.org/x/net v0.35.0
 )
 
