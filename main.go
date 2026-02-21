@@ -16,7 +16,10 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-var pushed = false
+var (
+	pushed    = false
+	lastFetch = time.Now().Add(-100 * time.Hour) // before trigger
+)
 
 func main() {
 	a := app.New()
@@ -64,7 +67,16 @@ func (g *gui) setupActions(w fyne.Window) {
 		d.Hide()
 		a.Stop()
 	}
-	go g.loadFeed(cleanup, w)
+	fyne.CurrentApp().Lifecycle().SetOnEnteredForeground(func() {
+		if time.Now().Sub(lastFetch).Hours() < 1 {
+			return
+		}
+
+		lastFetch = time.Now()
+		a.Start()
+		d.Show()
+		go g.loadFeed(cleanup, w)
+	})
 }
 
 func (g *gui) loadFeed(done func(), w fyne.Window) {
