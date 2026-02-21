@@ -16,6 +16,8 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+var pushed = false
+
 func main() {
 	a := app.New()
 	loadTheme(a)
@@ -40,8 +42,23 @@ func (g *gui) setupActions(w fyne.Window) {
 	d := dialog.NewCustomWithoutButtons("Loading",
 		container.NewStack(prop, a), w)
 
-	a.Start()
-	d.Show()
+	g.nav.OnBack = func() {
+		pushed = false
+		g.nav.Back()
+	}
+	if mob, ok := fyne.CurrentApp().Driver().(mobile.Driver); ok {
+		w.Canvas().SetOnTypedKey(func(ev *fyne.KeyEvent) {
+			if ev.Name == mobile.KeyBack {
+				if pushed {
+					pushed = false
+					g.nav.Back()
+					return
+				}
+
+				mob.GoBack()
+			}
+		})
+	}
 
 	cleanup := func() {
 		d.Hide()
@@ -105,6 +122,8 @@ func (g *gui) loadFeed(done func(), w fyne.Window) {
 }
 
 func (g *gui) showItem(i Item, nav *container.Navigation, w fyne.Window) {
+	pushed = true
+
 	v := newViewGUI()
 	ui := v.makeUI()
 
