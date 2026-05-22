@@ -154,7 +154,7 @@ func (g *gui) loadFeedFromReader(r io.Reader, done func(), w fyne.Window) error 
 		return len(rss.Items)
 	}
 	g.feed.CreateItem = func() fyne.CanvasObject {
-		l := widget.NewLabel("This is an item that will have content")
+		l := widget.NewRichTextFromMarkdown("This is an item that will have content")
 		l.Wrapping = fyne.TextWrapWord
 
 		icon := &canvas.Image{}
@@ -167,8 +167,8 @@ func (g *gui) loadFeedFromReader(r io.Reader, done func(), w fyne.Window) error 
 	g.feed.UpdateItem = func(id widget.ListItemID, o fyne.CanvasObject) {
 		item := rss.Items[id]
 
-		l := o.(*fyne.Container).Objects[0].(*widget.Label)
-		l.SetText(item.Title)
+		l := o.(*fyne.Container).Objects[0].(*widget.RichText)
+		l.ParseMarkdown(item.Title)
 
 		i := o.(*fyne.Container).Objects[1].(*canvas.Image)
 		loadIcon(item, i)
