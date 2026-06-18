@@ -8,3 +8,6 @@ Build = 41
 [AdaptiveIcon]
 Foreground = "img/Icon-foreground.png"
 Monochrome = "img/Icon-monochrome.png"
+
+[LinuxAndBSD]
+Categories = ["Utility"]
